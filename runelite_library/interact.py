@@ -251,7 +251,7 @@ class Interact:
         ys, xs = np.where(result >= tolerance)
 
         matches = []
-        for x, y in zip(xs, ys):
+        for x, y in zip(xs, ys, strict=True):
             center_x = x + tw // 2 + self.bounds["left"]
             center_y = y + th // 2 + self.bounds["top"]
             matches.append((int(center_x), int(center_y)))
@@ -420,7 +420,7 @@ class Bank(RuneliteComponent):
         """
         if len(rs_objects) != 2:
             raise ValueError(
-                f"withdraw_14 expected exactly 2 objects, got {len(rs_objects)}"
+                f"withdraw_14 expected exactly 2 objects, got {len(rs_objects)}",
             )
 
         for item in rs_objects:
