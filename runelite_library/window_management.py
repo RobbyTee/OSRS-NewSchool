@@ -79,7 +79,7 @@ class RuneLiteWindow:
     def bounds(self):
         self._ensure_window()
 
-        bounds = subprocess.check_output(
+        bounds = subprocess.check_output(  # noqa: S603
             [
                 "/usr/bin/xdotool",
                 "getwindowgeometry",
