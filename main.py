@@ -29,5 +29,7 @@ while True:
             sleep(240)
             login.logout_now()
             do_task = False
+        else:
+            break
 
     sleep(60)
