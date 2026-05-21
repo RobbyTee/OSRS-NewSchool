@@ -35,6 +35,11 @@ class Player(RuneliteComponent):
         player_stats = self.get_player_stats()
         return player_stats[stat]
 
+    def get_player_inv(self) -> dict:
+        inv_request = requests.get(url="http://127.0.0.1:8080/inv", timeout=5)
+        # inv = {}
+        print(inv_request.json())
+
     def path_to(self, path: int, rest: int = 0):
         """
         From step_1, paths up to inputted path number using minimap.

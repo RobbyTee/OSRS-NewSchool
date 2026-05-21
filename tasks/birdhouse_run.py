@@ -8,6 +8,7 @@ from runelite_library.interact import RuneliteComponent, close_interface
 from runelite_library.player import Player
 from runelite_library.rune_logger import log_event
 from runelite_library.teleports import Wearable
+from runelite_library.tracker import TrackTask
 from too_many_items import (
     BankObjects,
     GlobalColorObjects,
@@ -280,6 +281,8 @@ class BirdhouseRun(RuneliteComponent):
                 state = State.COMPLETE
 
             elif state == State.COMPLETE:
+                bh_run = TrackTask("birdhouse_run")
+                bh_run.task_completed()
                 log_event(f"{__name__} completed successfully\n")
                 return 0
 
