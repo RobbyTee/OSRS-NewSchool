@@ -26,6 +26,8 @@ while True:
         login.login_now()
 
         if bh.main():
+            sleep(240)
+            login.logout_now()
             do_task = False
 
     sleep(60)
