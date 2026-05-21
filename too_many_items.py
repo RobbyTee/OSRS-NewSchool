@@ -111,12 +111,13 @@ class ItemObjects:
 
     # Logs
     logs = r + "logs.png"
-    oak_logs = r + ""
-    willow_logs = r + ""
+    oak_logs = r + "oak_logs.png"
+    willow_logs = r + "willow_logs.png"
     yew_logs = r + "yew_logs.png"
+    maple_logs = r + "maple_logs.png"
     teak_logs = r + "teak_logs.png"
     mahogany_logs = r + "mahogany_logs.png"
-    redwood_logs = r + ""
+    redwood_logs = r + "redwood_logs.png"
     magic_logs = r + "magic_logs.png"
 
     # Herbs
@@ -154,6 +155,9 @@ class ItemObjects:
 
     # Teleport tablets
     taverly_tablet = r + "taverly_tablet.png"
+
+    # Seeds
+    onion_seed = r + "onion_seed.png"
 
 
 class LoginObjects:
@@ -316,6 +320,7 @@ class ToolTips:
 
     bank_booth = r + "bank_booth.png"
     grand_exchange = r + "grand_exchange.png"
+    bank_chest = r + "bank_chest.png"
 
 
 class WearableObjects:

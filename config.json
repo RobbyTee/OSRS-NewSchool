@@ -1,6 +1,6 @@
 {
     "Reaction_Time": "medium",
-    "Debug": "true",
+    "Debug": "false",
     "Interface_Shortcuts": {
         "inventory": "f1",
         "stats":     "f2",
@@ -12,5 +12,8 @@
         "prayer":    "f5",
         "combat":    "f8",
         "grouping":  "f7"
+    },
+    "Birdhouse_Run": {
+        "seed_type": "onion_seed"
     }
 }

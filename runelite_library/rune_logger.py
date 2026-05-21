@@ -1,3 +1,4 @@
+import json
 import logging
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
@@ -9,8 +10,21 @@ LOG_DIR.mkdir(exist_ok=True)
 # File paths
 ACTIVITY_LOG_PATH = LOG_DIR / "main.log"
 
+CONFIG_FILE = Path("config.json")
+with Path.open(CONFIG_FILE) as file:
+    CONFIG = json.load(file)
 
-def setup_logger(name, log_file, level=logging.DEBUG, formatter=None):
+DEBUG_OPTIONS = {
+    "True": True,
+    "False": False,
+}
+
+DEBUG = CONFIG["Debug"].strip().lower() == "true"
+
+LOGGING_LEVEL = logging.DEBUG if DEBUG else logging.INFO
+
+
+def setup_logger(name, log_file, level=LOGGING_LEVEL, formatter=None):
     """Creates and returns a logger with rotation."""
     handler = RotatingFileHandler(log_file, maxBytes=1_000_000, backupCount=3)
     if not formatter:

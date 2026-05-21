@@ -1,0 +1,88 @@
+{
+  "is_hover_map": "absolutely",
+  "hovers": [
+    {
+      "items": [
+          "Avantoe", "Kwuarm", 
+          "Ranarr weed", "Snapdragon", 
+          "Vial of water", "Amylase crystal",
+          "Super energy(4)"
+      ],
+      "condition": "qty > 1",
+      "hovers": [
+          ["GOOD"]
+      ]
+    },
+    {
+      "items_regex": [
+        "(Guam|Marrentill|Tarromin|Harralander|Ranarr|Toadflax|Irit|Avantoe|Kwuarm|Snapdragon|Cadantine|Lantadyme|Dwarf Weed|Torstol) seed"
+      ],
+      "condition": "qty >= 5",
+      "hovers": [
+          ["GOOD"] 
+      ]
+    },
+    {
+      "items_regex": [
+        "(Oak|Willow|Teak|Maple|Mahogany|Yew|Magic|Redwood) logs",
+        "Logs"
+      ],
+      "condition": "qty >= 4",
+      "hovers": [
+          ["GOOD"] 
+      ]
+    },
+    {
+      "items_regex": [
+        "(Earth|Fire|Water|Law) rune"
+      ],
+      "condition": "qty >= 10",
+      "hovers": [
+          ["GOOD"] 
+      ]
+    },
+    {
+      "items_regex": [
+        ".*seed"
+      ],
+      "condition": "qty >= 40",
+      "hovers": [
+          ["GOOD"] 
+      ]
+    },
+    {
+      "items": [
+        "Air rune"
+      ],
+      "condition": "qty >= 20",
+      "hovers": [
+          ["GOOD"] 
+      ]
+    },
+    {
+      "items": [
+        "Avantoe potion (unf)",
+        "Mort myre fungus",
+        "Toadflax potion (unf)",
+        "Crushed nest"
+      ],
+      "condition": "qty >= 14",
+      "hovers": [
+          ["GOOD"] 
+      ]
+    },
+    {
+      "items": [
+        "Glassblowing pipe",
+        "Molten glass",
+        "Bird nest",
+        "Pestle and mortar",
+        "Toadflax"
+      ],
+      "condition": "qty >= 1",
+      "hovers": [
+          ["GOOD"] 
+      ]
+    }
+  ]
+}

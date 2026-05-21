@@ -10,7 +10,7 @@ from scipy.ndimage import center_of_mass, label
 
 from runelite_library.rune_logger import log_event
 from runelite_library.window_management import RuneLiteWindow
-from too_many_items import BankObjects, LoginObjects, PlayerObjects, ToolTips
+from too_many_items import PlayerObjects
 
 CONFIG_FILE = Path("config.json")
 with Path.open(CONFIG_FILE) as file:
@@ -18,23 +18,11 @@ with Path.open(CONFIG_FILE) as file:
 
 REACTION_TIME_RANGES = {
     "fast": (0.05, 0.2),
-    "medium": (0.3, 0.8),
+    "medium": (0.1, 0.5),
     "slow": (0.5, 2),
 }
 
-DEBUG_OPTIONS = {
-    "True": True,
-    "False": False,
-}
-
-DEBUG = CONFIG["Debug"].strip().lower() == "true"
-
 INTERFACES = CONFIG["Interface_Shortcuts"]
-
-BANK_TOOLTIPS = {
-    "default": ToolTips.bank_booth,
-    "grand_exchange": ToolTips.grand_exchange,
-}
 
 
 class Interact:
@@ -179,13 +167,15 @@ class Interact:
 
             if mouse_tooltip:
                 if self.find_by_image(mouse_tooltip):
-                    log_event(f"Found {mouse_tooltip}.")
+                    log_event(
+                        message=f"Found {mouse_tooltip}",
+                        level="debug",
+                    )
                 else:
-                    if DEBUG:
-                        log_event(
-                            message=f"Didn't find {mouse_tooltip} on screen.",
-                            level="error",
-                        )
+                    log_event(
+                        message=f"Didn't find {mouse_tooltip} on screen.",
+                        level="debug",
+                    )
                     continue
 
             sleep(self.reaction_time())
@@ -316,117 +306,8 @@ class RuneliteComponent:
         self.client = Interact(self.rl)
         self.play_window = Interact(self.rl, self.rl.play_area)
         self.inventory = Interact(self.rl, self.rl.inventory)
-
-
-class LoginLogout(RuneliteComponent):
-    def logout_now(self):
-        open_interface("logout")
-        move_to_and_click(self.logout.random_coordinate_in_area())
-
-    def _handle_alternatives(self) -> tuple:
-        alts = [LoginObjects.try_again, LoginObjects.ok]
-
-        for image in alts:
-            coords = self.client.find_by_image(image)
-            if not coords:
-                continue
-
-            move_to_and_click(coords)
-
-    def login_now(self):
-        logged_in = False
-        if self.client.find_player():
-            logged_in = True
-
-        if not logged_in:
-            self._handle_alternatives()
-
-            self.client.click(LoginObjects.play_now_button)
-            self.client.click(LoginObjects.click_to_play_button)
-            if not self.client.wait_for_element(PlayerObjects.player_tile, 20):
-                return False
-
-        set_screen(self.rl)
-        return True
-
-
-class Bank(RuneliteComponent):
-    def open_bank(self, location: str | None = None):
-        tooltip = (
-            BANK_TOOLTIPS.get("default")
-            if not location
-            else BANK_TOOLTIPS.get(location)
-        )
-
-        self.client.click(
-            rs_object=BankObjects.bank,
-            mouse_tooltip=tooltip,
-        )
-        return self.play_window.wait_for_element(BankObjects.deposit_inventory)
-
-    def deposit_inventory(self):
-        return self.play_window.click(BankObjects.deposit_inventory)
-
-    def deposit_equipment(self):
-        return self.play_window.click(BankObjects.deposit_equipment)
-
-    def open_tab(self, tab: str):
-        return self.play_window.click(tab)
-
-    def withdraw(self, rs_objects: list[str], quantity: int | str = 1):
-        """
-        With the bank and correct tab open, withdraws items from that tab in the specified quantity.
-
-        Might have it withdraw "x" in the future. Use the special function `withdraw_14()` as needed.
-
-        Args:
-            rs_objects (list[str]): The item to withdraw.
-            quantity (int | str): The amount to withdraw. Defaults to 1, but can be one of:
-                - 1
-                - 5
-                - 10
-                - "all"
-
-        Raises:
-            KeyError: if quantity does not match a valid option.
-
-        """
-        quantity_dict = {
-            1: BankObjects.quantity_1,
-            5: BankObjects.quantity_5,
-            10: BankObjects.quantity_10,
-            "all": BankObjects.quantity_all,
-        }
-
-        if quantity in quantity_dict:
-            self.play_window.click(quantity_dict.get(quantity))
-        else:
-            raise KeyError
-
-        for item_to_withdraw in rs_objects:
-            self.play_window.click(item_to_withdraw)
-
-    def withdraw_14(self, rs_objects: tuple):
-        """
-        Right clicks rs_object and presses "Withdraw 14". Must have preset Withdraw X to 14!
-
-        Args:
-            rs_objects (tuple): A list containing exactly two items.
-
-        Raises:
-            ValueError: If rs_objects does not contain exactly 2 items.
-            ValueError: When "Withdraw 14" isn't found.
-
-        """
-        if len(rs_objects) != 2:
-            raise ValueError(
-                f"withdraw_14 expected exactly 2 objects, got {len(rs_objects)}",
-            )
-
-        for item in rs_objects:
-            self.play_window.click(item, click_type="right")
-            if not self.play_window.click(BankObjects.withdraw_14):
-                raise ValueError("Withdraw 14 not found as a menu option")
+        self.minimap = Interact(self.rl, self.rl.minimap)
+        self.compass = Interact(self.rl, self.rl.compass)
 
 
 # - - - - - - - #
