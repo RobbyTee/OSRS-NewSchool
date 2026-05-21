@@ -48,12 +48,13 @@ class BankObjects:
 class ChatMenuObjects:
     """Selections that will be made in the chat"""
 
-    r = "./Images/chat_menus"
+    r = "./Images/chat_menus/"
 
     al_kharid = r + "al_kharid.png"
     draynor_village = r + "draynor_village.png"
     edgeville = r + "edgeville.png"
     karamja = r + "karamja.png"
+    fossil_island = r + "fossil_island.png"
 
 
 class Food:
@@ -83,6 +84,9 @@ class GlobalColorObjects:
 
     # Farming Patches
     tree_patch = (115, 190, 0)
+
+    # MushTrees
+    mush_tree = (200, 30, 220)
 
 
 class ItemObjects:
@@ -158,6 +162,8 @@ class ItemObjects:
 
     # Seeds
     onion_seed = r + "onion_seed.png"
+
+    clockwork = r + "clockwork.png"
 
 
 class LoginObjects:

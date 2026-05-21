@@ -83,6 +83,16 @@
       "hovers": [
           ["GOOD"] 
       ]
+    },
+    {
+      "items_regex": [
+        "Digsite pendant.*",
+        "Strung rabbit foot"
+      ],
+      "condition": "qty > 0",
+      "hovers": [
+          ["GOOD"] 
+      ]
     }
   ]
 }
