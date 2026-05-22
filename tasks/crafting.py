@@ -17,35 +17,35 @@ TIME_TO_CRAFT = 15  # in minutes (or 0 to disable)
 GLASS_REQS = {
     "Beer Glass": {
         "level": 1,
-        "option": 1,
+        "option": "1",
     },
     "Candle Lantern": {
         "level": 4,
-        "option": 2,
+        "option": "2",
     },
     "Oil Lamp": {
         "level": 12,
-        "option": 3,
+        "option": "3",
     },
     "Vial": {
         "level": 33,
-        "option": 4,
+        "option": "4",
     },
     "Fishbowl": {
         "level": 42,
-        "option": 5,
+        "option": "5",
     },
     "Glass Orb": {
         "level": 46,
-        "option": 6,
+        "option": "6",
     },
     "Bullseye Lantern Lens": {
         "level": 49,
-        "option": 7,
+        "option": "7",
     },
     "Dorgeshuun Light Orb": {
         "level": 87,
-        "option": 8,
+        "option": "8",
     },
 }
 
