@@ -1,9 +1,15 @@
+import random
 from time import sleep
 
 from runelite_library.login import LoginLogout
 from runelite_library.tracker import TrackTask
 from runelite_library.window_management import RuneLiteWindow
 from tasks.birdhouse_run import BirdhouseRun
+
+
+def random_interval():
+    return random.unifom(50, 75)
+
 
 rl = RuneLiteWindow()
 rl.activate()
@@ -26,10 +32,10 @@ while True:
         login.login_now()
 
         if bh.main():
-            sleep(240)
+            sleep(30)
             login.logout_now()
             do_task = False
         else:
             break
 
-    sleep(60)
+    sleep(random_interval() * 60)
