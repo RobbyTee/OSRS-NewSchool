@@ -65,12 +65,18 @@ class MoltenGlass(RuneliteComponent):
     def glassblowing(self, state):
         while True:
             if state == GlassBlowingStates.INIT:
+                log_event(f"Starting {__name__}")
                 p = Player(self.rl)
                 p_crafting_level = p.stat_level("crafting")
 
-                for craft_method in GLASS_REQS.values():
-                    if craft_method["level"] <= p_crafting_level:
-                        craft_option = craft_method["option"]
+                for craft_method, reqs in GLASS_REQS.items():
+                    if reqs["level"] <= p_crafting_level:
+                        craft_option = reqs["option"]
+                        to_craft = craft_method
+
+                log_event(
+                    f"Player's crafting level is {p_crafting_level}, crafting {to_craft}"
+                )
 
                 state = GlassBlowingStates.GEAR_PREP
 
@@ -92,11 +98,20 @@ class MoltenGlass(RuneliteComponent):
                 bank.deposit_inventory()
                 bank.open_tab(BANK_TAB)
                 bank.withdraw(tools)
-                bank.withdraw(
-                    resource,
-                    "all",
-                    check_quantity=True,
-                )
+                try:
+                    bank.withdraw(
+                        resource,
+                        "all",
+                        check_quantity=True,
+                    )
+                except TimeoutError as e:
+                    log_event(
+                        f"Missing necessary ingredients for {__name__}\n {e}",
+                        "error",
+                    )
+                    close_interface()
+                    state = GlassBlowingStates.FAILURE
+                    continue
                 close_interface()
                 state = GlassBlowingStates.CRAFT
 
@@ -134,4 +149,5 @@ class MoltenGlass(RuneliteComponent):
                 if result == 1:
                     return False
 
-            return True
+            else:
+                return True

@@ -215,7 +215,9 @@ class BirdhouseRun(RuneliteComponent):
                         f"Missing necessary ingredients for {__name__}\n {e}",
                         "error",
                     )
-                    return 1
+                    close_interface()
+                    state = State.FAILURE
+                    continue
                 close_interface()
                 log_event(f"Done withdrawing gear for {__name__}")
                 state = State.EQUIP_GEAR
