@@ -8,8 +8,6 @@ from runelite_library.window_management import RuneLiteWindow
 from tasks.birdhouse_run import BirdhouseRun
 from tasks.crafting import MoltenGlass
 
-DO_CRAFTING = True
-
 
 def random_interval():
     return int(random.uniform(50, 60))
@@ -50,6 +48,7 @@ class AutoRune:
 
     def main(self):
         do_task = False
+        do_crafting = True
 
         while True:
             if bedtime():
@@ -64,8 +63,8 @@ class AutoRune:
 
                 if self.bh.main():
                     print(f"{timestamp()}: Completed birdhouse run")
-                    if DO_CRAFTING and not self.craft.main():
-                        DO_CRAFTING = False
+                    if do_crafting and not self.craft.main():
+                        do_crafting = False
 
                     sleep(300)
                     self.login.logout_now()
