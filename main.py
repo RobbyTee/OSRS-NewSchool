@@ -54,11 +54,12 @@ class AutoRune:
         while True:
             if bedtime():
                 sleep(3600)
+                continue
 
-            elif self.last_bh.time_since_task() > 50:
+            if self.last_bh.time_since_task() > 50:
                 do_task = True
 
-            elif do_task:
+            if do_task:
                 self.login.login_now()
 
                 if self.bh.main():
