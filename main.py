@@ -60,7 +60,7 @@ class AutoRune:
                 if self.bh.main():
                     print(f"Completed Birdhouse_run at")
                     if DO_CRAFTING and not self.craft.main():
-                        do_craft = False
+                        DO_CRAFTING = False
 
                     sleep(300)
                     self.login.logout_now()
@@ -71,5 +71,7 @@ class AutoRune:
 
             sleep(self.sleep_timer())
 
-    if __name__ == "__main__":
-        main()
+
+if __name__ == "__main__":
+    play = AutoRune()
+    play.main()
