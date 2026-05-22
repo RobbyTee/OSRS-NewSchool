@@ -23,6 +23,10 @@ def bedtime():
     return now >= start or now <= end
 
 
+def timestamp():
+    return datetime.now().strftime("%m-%d-%Y %H:%M")
+
+
 class AutoRune:
     def __init__(self):
         rl = RuneLiteWindow()
@@ -40,7 +44,7 @@ class AutoRune:
         sleep_time = random_interval() - self.last_bh.time_since_task()
         sleep_time = sleep_time if sleep_time > 0 else 1
 
-        print(f"Sleeping for {sleep_time} minutes.")
+        print(f"{timestamp()}: Sleeping for {sleep_time} minutes.")
 
         return sleep_time * 60
 
@@ -58,12 +62,13 @@ class AutoRune:
                 self.login.login_now()
 
                 if self.bh.main():
-                    print(f"Completed Birdhouse_run at")
+                    print(f"{timestamp()}: Completed birdhouse run")
                     if DO_CRAFTING and not self.craft.main():
                         DO_CRAFTING = False
 
                     sleep(300)
                     self.login.logout_now()
+                    print(f"{timestamp()}: Logged out successfully")
                     do_task = False
 
                 else:
@@ -73,5 +78,6 @@ class AutoRune:
 
 
 if __name__ == "__main__":
+    print(f"{timestamp()}: Started Script")
     play = AutoRune()
     play.main()
