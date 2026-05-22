@@ -6,10 +6,13 @@ from runelite_library.login import LoginLogout
 from runelite_library.tracker import TrackTask
 from runelite_library.window_management import RuneLiteWindow
 from tasks.birdhouse_run import BirdhouseRun
+from tasks.crafting import MoltenGlass
+
+DO_CRAFTING = True
 
 
 def random_interval():
-    return random.uniform(50, 75)
+    return int(random.uniform(50, 60))
 
 
 def bedtime():
@@ -20,37 +23,53 @@ def bedtime():
     return now >= start or now <= end
 
 
-def main():
-    rl = RuneLiteWindow()
-    rl.activate()
-    sleep(0.5)
+class AutoRune:
+    def __init__(self):
+        rl = RuneLiteWindow()
+        rl.activate()
+        sleep(0.5)
 
-    login = LoginLogout(rl)
+        self.login = LoginLogout(rl)
 
-    bh = BirdhouseRun(rl)
-    last_bh = TrackTask("birdhouse_run")
+        self.bh = BirdhouseRun(rl)
+        self.last_bh = TrackTask("birdhouse_run")
 
-    do_task = False
+        self.craft = MoltenGlass(rl)
 
-    while True:
-        if bedtime():
-            sleep(3600)
+    def sleep_timer(self):
+        sleep_time = random_interval() - self.last_bh.time_since_task()
+        sleep_time = sleep_time if sleep_time > 0 else 1
 
-        if last_bh.time_since_task() > 50:
-            do_task = True
+        print(f"Sleeping for {sleep_time} minutes.")
 
-        if do_task:
-            login.login_now()
+        return sleep_time * 60
 
-            if bh.main():
-                sleep(30)
-                login.logout_now()
-                do_task = False
-            else:
-                break
+    def main(self):
+        do_task = False
 
-        sleep(random_interval() * 60)
+        while True:
+            if bedtime():
+                sleep(3600)
 
+            elif self.last_bh.time_since_task() > 50:
+                do_task = True
 
-if __name__ == "__main__":
-    main()
+            elif do_task:
+                self.login.login_now()
+
+                if self.bh.main():
+                    print(f"Completed Birdhouse_run at")
+                    if DO_CRAFTING and not self.craft.main():
+                        do_craft = False
+
+                    sleep(300)
+                    self.login.logout_now()
+                    do_task = False
+
+                else:
+                    break
+
+            sleep(self.sleep_timer())
+
+    if __name__ == "__main__":
+        main()

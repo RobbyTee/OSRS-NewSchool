@@ -395,3 +395,7 @@ def open_interface(interface: str):
 
 def close_interface():
     pyautogui.press("esc")
+
+
+def press(button: str):
+    pyautogui.press(button)
