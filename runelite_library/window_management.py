@@ -7,12 +7,14 @@ import numpy as np
 class RuneLiteWindow:
     def __init__(self) -> None:
         self.window_id = None
+        self.player_name = None
 
     def _find_window(self) -> None:
         result = subprocess.check_output(["/usr/bin/wmctrl", "-l"]).decode()
 
         for line in result.splitlines():
             if "runelite" in line.lower():
+                self.player_name = line.split("-")[1].lstrip()
                 return line.split()[0]
 
         return None
