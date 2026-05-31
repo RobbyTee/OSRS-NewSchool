@@ -3,6 +3,7 @@ from enum import Enum, auto
 from pathlib import Path
 from time import sleep
 
+from config import settings
 from runelite_library.bank import Bank
 from runelite_library.interact import RuneliteComponent, close_interface
 from runelite_library.player import Player
@@ -19,12 +20,13 @@ from too_many_items import (
     WearableObjects,
 )
 
-CONFIG_FILE = Path("config.json")
-with Path.open(CONFIG_FILE) as file:
-    CONFIG = json.load(file)
+# CONFIG_FILE = Path("config.json")
+# with Path.open(CONFIG_FILE) as file:
+#     CONFIG = json.load(file)
 
-BIRDHOUSE_CONFIG = CONFIG["Birdhouse_Run"]
-SEED_TYPE = BIRDHOUSE_CONFIG["seed_type"]
+# BIRDHOUSE_CONFIG = CONFIG["Birdhouse_Run"]
+# SEED_TYPE = BIRDHOUSE_CONFIG["seed_type"]
+SEED_TYPE = settings.seed_type
 try:
     SEED_TYPE = getattr(ItemObjects, SEED_TYPE)
 except AttributeError:

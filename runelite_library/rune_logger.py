@@ -3,6 +3,8 @@ import logging
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
 
+from config import settings
+
 # Create logs directory if not exists
 LOG_DIR = Path("utils")
 LOG_DIR.mkdir(exist_ok=True)
@@ -10,18 +12,18 @@ LOG_DIR.mkdir(exist_ok=True)
 # File paths
 ACTIVITY_LOG_PATH = LOG_DIR / "main.log"
 
-CONFIG_FILE = Path("config.json")
-with Path.open(CONFIG_FILE) as file:
-    CONFIG = json.load(file)
+# CONFIG_FILE = Path("config.json")
+# with Path.open(CONFIG_FILE) as file:
+#     CONFIG = json.load(file)
 
-DEBUG_OPTIONS = {
-    "True": True,
-    "False": False,
-}
+# DEBUG_OPTIONS = {
+#     "True": True,
+#     "False": False,
+# }
 
-DEBUG = CONFIG["Debug"].strip().lower() == "true"
+# DEBUG = CONFIG["Debug"].strip().lower() == "true"
 
-LOGGING_LEVEL = logging.DEBUG if DEBUG else logging.INFO
+LOGGING_LEVEL = logging.DEBUG if settings.debug else logging.INFO
 
 
 def setup_logger(name, log_file, level=LOGGING_LEVEL, formatter=None):

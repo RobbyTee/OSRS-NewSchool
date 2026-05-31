@@ -8,13 +8,15 @@ import numpy as np
 import pyautogui
 from scipy.ndimage import center_of_mass, label
 
+from config import settings
+from custom_dataclasses import FKeys
 from runelite_library.rune_logger import log_event
 from runelite_library.window_management import RuneLiteWindow
 from too_many_items import PlayerObjects
 
-CONFIG_FILE = Path("config.json")
-with Path.open(CONFIG_FILE) as file:
-    CONFIG = json.load(file)
+# CONFIG_FILE = Path("config.json")
+# with Path.open(CONFIG_FILE) as file:
+#     CONFIG = json.load(file)
 
 REACTION_TIME_RANGES = {
     "fast": (0.05, 0.2),
@@ -22,7 +24,19 @@ REACTION_TIME_RANGES = {
     "slow": (0.5, 2),
 }
 
-INTERFACES = CONFIG["Interface_Shortcuts"]
+# INTERFACES = CONFIG["Interface_Shortcuts"]
+INTERFACES = {
+    "inventory": settings.inventory,
+    "stats": settings.stats,
+    "spells": settings.spells,
+    "equipment": settings.equipment,
+    "quests": settings.quests,
+    "logout": settings.logout,
+    "emotes": settings.emotes,
+    "prayer": settings.prayer,
+    "combat": settings.combat,
+    "grouping": settings.grouping,
+}
 
 
 class Interact:
@@ -36,7 +50,7 @@ class Interact:
 
     @staticmethod
     def reaction_time():
-        low, high = REACTION_TIME_RANGES[CONFIG["Reaction_Time"]]
+        low, high = REACTION_TIME_RANGES[settings.reaction_time]
         return random.uniform(low, high)
 
     @property

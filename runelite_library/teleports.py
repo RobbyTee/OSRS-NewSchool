@@ -1,6 +1,3 @@
-import json
-from pathlib import Path
-
 from runelite_library.interact import RuneliteComponent, open_interface
 from runelite_library.window_management import RuneLiteWindow
 from too_many_items import (
@@ -9,9 +6,6 @@ from too_many_items import (
     NormalSpellObjects,
     WearableObjects,
 )
-
-with Path.open("config.json") as file:
-    CONFIG = json.load(file)
 
 
 class Spells(RuneliteComponent):
