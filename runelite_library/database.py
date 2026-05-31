@@ -1,43 +1,10 @@
-from dataclasses import asdict, dataclass
+from dataclasses import asdict
 
 import requests
 
+from custom_dataclasses import Account, BirdhouseRun
+
 DATABASE_URL = "http://webserver.spareroom.com:8000"
-
-
-@dataclass
-class Account:
-    account_name: str
-
-    attack_level: int | None = None
-    strength_level: int | None = None
-    defence_level: int | None = None
-    ranged_level: int | None = None
-    prayer_level: int | None = None
-    agility_level: int | None = None
-    construction_level: int | None = None
-    cooking_level: int | None = None
-    crafting_level: int | None = None
-    farming_level: int | None = None
-    firemaking_level: int | None = None
-    fishing_level: int | None = None
-    fletching_level: int | None = None
-    herblore_level: int | None = None
-    hunter_level: int | None = None
-    magic_level: int | None = None
-    mining_level: int | None = None
-    runecraft_level: int | None = None
-    sailing_level: int | None = None
-    slayer_level: int | None = None
-    smithing_level: int | None = None
-    thieving_level: int | None = None
-    woodcutting_level: int | None = None
-
-
-@dataclass
-class BirdhouseRun:
-    account_id: int
-    bird_nests: int
 
 
 def create_player(account_name: str) -> requests.Response:
@@ -89,3 +56,10 @@ def submit_bird_run(birdhouse_run: BirdhouseRun) -> requests.Response:
         json=asdict(birdhouse_run),
         timeout=5,
     )
+
+
+def test_database_connection() -> requests.status_codes:
+    endpoint = "/api/servers"
+    url = DATABASE_URL + endpoint
+
+    return requests.get(url, timeout=5).status_code
