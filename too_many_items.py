@@ -100,8 +100,12 @@ class ItemObjects:
     seed_box = r + "seed_box.png"
     bottomless_bucket = r + "bottomless_bucket.png"
     ring_of_dueling = r + "ring_of_dueling.png"
-    empty_birdnest = r + "empty_birdnest.png"
     fire_battlestaff = r + "fire_battlestaff.png"
+
+    # Birdnests
+    empty_birdnest = r + "empty_birdnest.png"
+    seed_nest = r + "seed_nest.png"
+    ring_nest = r + "ring_nest.png"
 
     # An image of 5 seeds together
     herb_seed = r + "herb_seeds.png"

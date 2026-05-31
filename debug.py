@@ -8,6 +8,22 @@ from runelite_library.database import (
     submit_bird_run,
     update_player_stats,
 )
+from runelite_library.interact import Interact
+from runelite_library.window_management import RuneLiteWindow
+from too_many_items import ItemObjects
+
+rl = RuneLiteWindow()
+i = Interact(rl)
+
+seed_nest = i.count_object(ItemObjects.seed_nest)
+nest = i.count_object(ItemObjects.empty_birdnest)
+ring_nest = i.count_object(ItemObjects.ring_nest)
+total = seed_nest + nest + ring_nest
+
+print(f"Seeds = {seed_nest}")
+print(f"Rings = {ring_nest}")
+print(f"Empty = {nest}")
+print(f"Total = {total}")
 
 # create_player("Elven Steve")
 # if r.status_code == 409:

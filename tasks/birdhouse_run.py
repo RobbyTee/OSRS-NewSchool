@@ -26,7 +26,7 @@ from too_many_items import (
 
 # BIRDHOUSE_CONFIG = CONFIG["Birdhouse_Run"]
 # SEED_TYPE = BIRDHOUSE_CONFIG["seed_type"]
-SEED_TYPE = settings.seed_type
+SEED_TYPE = settings.seed_type.value
 try:
     SEED_TYPE = getattr(ItemObjects, SEED_TYPE)
 except AttributeError:
@@ -287,24 +287,30 @@ class BirdhouseRun(RuneliteComponent):
             elif state == State.COMPLETE:
                 bh_run = TrackTask("birdhouse_run")
                 bh_run.task_completed()
+
+                empty_nest = self.inventory.count_object(ItemObjects.empty_birdnest)
+                ring_nest = self.inventory.count_object(ItemObjects.ring_nest)
+                seed_nest = self.inventory.count_object(ItemObjects.seed_nest)
+                total_nests = empty_nest + ring_nest + seed_nest
+
                 log_event(f"{__name__} completed successfully\n")
-                return 0
+                return 0, total_nests
 
             elif state == State.FAILURE:
                 log_event(f"{__name__} experienced a failure\n", "error")
-                return 1
+                return 1, None
 
             elif state == State.RETURN_TO_BANK:
                 log_event(f"{__name__} found no bank\n", "error")
-                return 2
+                return 2, None
 
     def main(self, state=State.INIT):
         log_event(f"Starting {__name__}")
         while True:
-            result = self.state_machine(state)
+            result, amount = self.state_machine(state)
             if result == 2:
                 Bank.return_to_bank()
             elif result == 1:
-                return False
+                return None
             elif result == 0:
-                return True
+                return amount

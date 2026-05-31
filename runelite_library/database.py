@@ -65,3 +65,8 @@ def test_database_connection() -> requests.status_codes:
     url = DATABASE_URL + endpoint
 
     return requests.get(url, timeout=5).status_code
+
+
+class DatabaseCalls:
+    def __init__(self):
+        pass

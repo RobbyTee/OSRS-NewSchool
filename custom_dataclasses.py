@@ -44,7 +44,7 @@ class BirdhouseRun:
 
 
 class SeedType(str, Enum):
-    ONION_SEED = "onion seed"
+    ONION_SEED = "onion_seed"
 
 
 class FKeys(str, Enum):
