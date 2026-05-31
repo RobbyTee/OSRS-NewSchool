@@ -3,7 +3,6 @@ from pathlib import Path
 from dotenv import set_key
 
 from custom_dataclasses import FKeys, ReactionTime, SeedType
-from runelite_library.database import test_database_connection
 
 ENV_FILE = Path(".env")
 
@@ -127,12 +126,6 @@ def setup() -> None:
 
     write_user_settings_to_env(user_settings)
     print("\nSettings saved to .env")
-
-    try:
-        if user_settings["USE_DATABASE"]:
-            print(f"\nStatus code to the database: {test_database_connection()}")
-    except KeyError:
-        pass
 
 
 if __name__ == "__main__":
