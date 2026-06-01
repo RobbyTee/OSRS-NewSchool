@@ -257,7 +257,7 @@ class BirdhouseRun(RuneliteComponent):
 
             elif state == State.FILL_BH:
                 self.inventory.click(SEED_TYPE)
-                if not self.play_window.click(
+                if not self.client.click(
                     BIRDHOUSES.get(bh_step),
                     mouse_tooltip=ToolTips.birdhouse_empty,
                 ):
