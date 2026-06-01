@@ -1,11 +1,7 @@
 # Thank you for checking this out!
-OSRS has been my training ground for learning and mastering Python. This project has gone through many iterations, but before I take this further I need to share it with the world for constructive feedback.
+OSRS has been my training ground for learning and mastering Python. This project exemplifies my experience with Python. Very little AI was used in the creation of this code! Experience, documentation and help from these Youtube channels: Arjan Code and Corey Schaffer.
 
-It started off as a vibe-coded project. I still ask ChatGPT for advice, but I'm noticing it has severe limitations (which I consider as a sign of growth).
-
-**This script is tailored to run on Rocky Linux.**
-
-Finally, you'll find the history of this project and get an understanding of where it is headed by checking out my other repository, [*OldSchoolRS-CV2*](https://github.com/RobbyTee/OldSchoolRS-CV2). OSRS-NewSchool aims to be the final iteration of this toolset by applying everything I've learned.
+**This script is tailored to run on X11 Linux.**
 
 &nbsp;
 
@@ -18,12 +14,12 @@ First of all, I needed to find and activate the RuneLite window. When capturing 
 ## &nbsp; interact
 The primary way of interacting with the game will be through click(). Since I could ask it to look for either a color (r,g,b) or match an image (filepath to image) I made this flexible to accept both as an input. 
 
-I've made several auxilliary functions to handle specific, repetitive tasks.
-
-## &nbsp; rune_logger
-I'm still not certain on when / what to log. Typically I'll put in a log entry if I have a particularly stubborn or inconsistent function. I'll use more logging when I build out the actual tasks.
+## &nbsp; database
+Tying into a Postgresql database is a new skill I added to this project. SQLAlchemy and a FastAPI backend brought this project together.
 
 &nbsp; 
 
 # main.py
-An example of how these pieces will fit together in a task. Please check out [*OldSchoolRS-CV2*](https://github.com/RobbyTee/OldSchoolRS-CV2) *tasks* folder for the future potential of this toolset.
+You will not have success with running this script as-is! I have my object and tile markers specifically placed and it doesn't feel right to share it. 
+
+Should you desire to use this project, don't! I've had several banned accounts using this methodology, but the journey has always been centered around gaining experience with Python.
