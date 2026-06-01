@@ -17,6 +17,7 @@ from too_many_items import (
     MenuObjects,
     MiscObjects,
     ToolObjects,
+    ToolTips,
     WearableObjects,
 )
 
@@ -255,7 +256,10 @@ class BirdhouseRun(RuneliteComponent):
 
             elif state == State.FILL_BH:
                 self.inventory.click(SEED_TYPE)
-                if not self.play_window.click(BIRDHOUSES.get(bh_step)):
+                if not self.play_window.click(
+                    BIRDHOUSES.get(bh_step),
+                    mouse_tooltip=ToolTips.birdhouse_empty,
+                ):
                     state = State.FAILURE
                     continue
                 if bh_step == 4:

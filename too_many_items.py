@@ -331,6 +331,7 @@ class ToolTips:
     bank_booth = r + "bank_booth.png"
     grand_exchange = r + "grand_exchange.png"
     bank_chest = r + "bank_chest.png"
+    birdhouse_empty = r + "birdhouse_empty.png"
 
 
 class WearableObjects:
