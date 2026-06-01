@@ -5,7 +5,6 @@ import requests
 from config import settings
 from custom_dataclasses import Account, BirdhouseRun
 
-# DATABASE_URL = "http://webserver.spareroom.com:8000"
 DATABASE_URL = settings.db_url
 
 
