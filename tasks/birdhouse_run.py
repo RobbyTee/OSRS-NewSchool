@@ -232,6 +232,7 @@ class BirdhouseRun(RuneliteComponent):
                 state = State.GO_TO_NEXT_BH
 
             elif state == State.CLICK_BH:
+                sleep(1)
                 if not self.play_window.click(BIRDHOUSES.get(bh_step)):
                     state = State.FAILURE
                     continue
