@@ -1,5 +1,5 @@
 # Thank you for checking this out!
-OSRS has been my training ground for learning and mastering Python. This project exemplifies my experience with Python. Very little AI was used in the creation of this code! Experience, documentation and help from these Youtube channels: Arjan Code and Corey Schaffer.
+OSRS has been my training ground for learning and mastering Python. This project exemplifies my experience with Python. Very little AI was used in the creation of this code! Experience, documentation, and help from these Youtube channels: Arjan Code and Corey Schaffer.
 
 **This script is tailored to run on X11 Linux.**
 
