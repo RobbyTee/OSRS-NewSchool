@@ -7,6 +7,7 @@ from runelite_library.player import Player
 from runelite_library.rune_logger import log_event
 from too_many_items import (
     BankObjects,
+    GlobalColorObjects,
     ItemObjects,
     ToolObjects,
 )
@@ -151,3 +152,15 @@ class MoltenGlass(RuneliteComponent):
 
             else:
                 return True
+
+
+class NecklaceStates(Enum):
+    INIT = auto()
+    GEAR_PREP = auto()
+    OPEN_BANK = auto()
+    WITHDRAW_GEAR = auto()
+
+
+class RubyNecklace(RuneliteComponent):
+    def is_player_in_edgeville(self):
+        return self.client.find_by_image(BankObjects.edgeville)

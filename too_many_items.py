@@ -43,6 +43,7 @@ class BankObjects:
     fossil_island = r + "fossil_island.png"
     hosidius = r + "hosidius.png"
     farming_guild = r + "farming_guild.png"
+    edgeville = r + "edgeville.png"
 
 
 class ChatMenuObjects:
@@ -87,6 +88,8 @@ class GlobalColorObjects:
 
     # MushTrees
     mush_tree = (200, 30, 220)
+
+    furnace = (184, 45, 144)
 
 
 class ItemObjects:
@@ -169,6 +172,7 @@ class ItemObjects:
 
     clockwork = r + "clockwork.png"
 
+    necklace_mould = r + "necklace_mould.png"
     ruby = r + "ruby.png"
     gold_bar = r + "gold_bar.png"
 
