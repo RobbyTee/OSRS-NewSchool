@@ -194,7 +194,7 @@ class BirdhouseRun(RuneliteComponent):
 
             elif state == State.OPEN_BANK:
                 bank = Bank(self.rl)
-                if not bank.open_bank("bank_chest"):
+                if not bank.open_bank():
                     state = State.RETURN_TO_BANK
                     continue
 

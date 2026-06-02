@@ -1,24 +1,12 @@
 from runelite_library.interact import RuneliteComponent
 from too_many_items import BankObjects, MiscObjects, ToolTips
 
-BANK_TOOLTIPS = {
-    "default": ToolTips.bank_booth,
-    "grand_exchange": ToolTips.grand_exchange,
-    "bank_chest": ToolTips.bank_chest,
-}
-
 
 class Bank(RuneliteComponent):
-    def open_bank(self, location: str | None = None):
-        tooltip = (
-            BANK_TOOLTIPS.get("default")
-            if not location
-            else BANK_TOOLTIPS.get(location)
-        )
-
+    def open_bank(self):
         self.client.click(
             rs_object=BankObjects.bank,
-            mouse_tooltip=tooltip,
+            mouse_tooltip=ToolTips.bank,
         )
         return self.play_window.wait_for_element(BankObjects.deposit_inventory)
 

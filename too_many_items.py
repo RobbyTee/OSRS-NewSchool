@@ -169,6 +169,9 @@ class ItemObjects:
 
     clockwork = r + "clockwork.png"
 
+    ruby = r + "ruby.png"
+    gold_bar = r + "gold_bar.png"
+
 
 class LoginObjects:
     """All the different login icons to get into the game."""
@@ -328,9 +331,7 @@ class ToolObjects:
 class ToolTips:
     r = "./Images/tooltips/"
 
-    bank_booth = r + "bank_booth.png"
-    grand_exchange = r + "grand_exchange.png"
-    bank_chest = r + "bank_chest.png"
+    bank = r + "bank.png"
     birdhouse_empty = r + "birdhouse_empty.png"
 
 
@@ -357,3 +358,5 @@ class WearableObjects:
     rogue_mask = r + "rogue_mask.png"
 
     rabbits_foot = r + "rabbits_foot.png"
+
+    staff_of_fire = r + "staff_of_fire.png"
