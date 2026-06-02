@@ -89,7 +89,7 @@ class MoltenGlass(RuneliteComponent):
 
             elif state == GlassBlowingStates.OPEN_BANK:
                 bank = Bank(self.rl)
-                if not bank.open_bank("bank_chest"):
+                if not bank.open_bank():
                     state = GlassBlowingStates.RETURN_TO_BANK
                     continue
 
@@ -162,5 +162,22 @@ class NecklaceStates(Enum):
 
 
 class RubyNecklace(RuneliteComponent):
-    def is_player_in_edgeville(self):
-        return self.client.find_by_image(BankObjects.edgeville)
+    def player_in_edgeville(self) -> bool:
+        return bool(self.client.find_by_image(BankObjects.edgeville))
+
+    def state_machine(self, state):
+        if state == NecklaceStates.INIT:
+            teleport_to_edgeville = True
+
+            p = Player(self.rl)
+
+            if self.player_in_edgeville():
+                teleport_to_edgeville = False
+
+            if p.stat_level("crafting") < 40:
+                raise ValueError(
+                    f"Your crafting level is not greater than 40: got {p.stat_level('crafting')}"
+                )
+
+    def main(self, state=NecklaceStates.INIT):
+        return self.state_machine(state)

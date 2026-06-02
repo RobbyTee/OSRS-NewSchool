@@ -34,7 +34,7 @@
     },
     {
       "items_regex": [
-        "(Earth|Fire|Water|Law) rune"
+        "(Earth|Fire|Water|Law|Nature) rune"
       ],
       "condition": "qty >= 10",
       "hovers": [
