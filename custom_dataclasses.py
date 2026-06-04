@@ -35,6 +35,7 @@ class Account:
     smithing_level: int | None = None
     thieving_level: int | None = None
     woodcutting_level: int | None = None
+    hitpoints_level: int | None = None
 
 
 @dataclass

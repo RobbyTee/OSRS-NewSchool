@@ -9,4 +9,4 @@ i = Interact(rl)
 b = Bank(rl)
 
 p = Player(rl)
-print(p.update_player_stats(account_name="Hellen Goose", account_id=4))
+print(p.update_player_stats(account_name="Hellen Goose", account_id=4).json())

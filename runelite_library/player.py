@@ -60,6 +60,7 @@ class Player(RuneliteComponent):
         setattr(new_account, "hunter_level", stats["hunter"])
         setattr(new_account, "construction_level", stats["construction"])
         setattr(new_account, "sailing_level", stats["sailing"])
+
         return patch_player_stats(new_account, account_id)
 
     def stat_level(self, stat: str):
