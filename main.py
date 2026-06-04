@@ -17,7 +17,7 @@ def random_interval():
 
 def bedtime():
     now = datetime.now().time()
-    start = time(22, 30)
+    start = time(23, 30)
     end = time(5, 0)
 
     return now >= start or now <= end
@@ -35,7 +35,6 @@ class AutoRune:
 
         self.login = LoginLogout(self.rl)
 
-        self.bh = BirdhouseRun(self.rl)
         self.last_bh = TrackTask("birdhouse_run")
 
         self.craft = MoltenGlass(self.rl)
@@ -78,6 +77,8 @@ class AutoRune:
         do_crafting = True
 
         player_id = self.initialize_player()
+
+        self.bh = BirdhouseRun(self.rl, player_id)
 
         while True:
             if bedtime():

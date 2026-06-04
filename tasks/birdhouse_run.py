@@ -1,6 +1,4 @@
-import json
 from enum import Enum, auto
-from pathlib import Path
 from time import sleep
 
 from config import settings
@@ -107,9 +105,10 @@ class State(Enum):
 
 
 class BirdhouseRun(RuneliteComponent):
-    def __init__(self, rl):
+    def __init__(self, rl, account_id: int):
         super().__init__(rl)
         self.p = Player(self.rl)
+        self.account_id = account_id
 
     def go_to_bh_1(self):
         dp = Wearable(self.rl)
@@ -297,6 +296,11 @@ class BirdhouseRun(RuneliteComponent):
                 ring_nest = self.inventory.count_object(ItemObjects.ring_nest)
                 seed_nest = self.inventory.count_object(ItemObjects.seed_nest)
                 total_nests = empty_nest + ring_nest + seed_nest
+
+                self.p.update_player_stats(
+                    account_name=self.rl.player_name,
+                    account_id=self.account_id,
+                )
 
                 log_event(f"{__name__} completed successfully\n")
                 return 0, total_nests

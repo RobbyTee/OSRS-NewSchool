@@ -9,4 +9,4 @@ i = Interact(rl)
 b = Bank(rl)
 
 p = Player(rl)
-p.step_to(2)
+print(p.update_player_stats(account_name="Hellen Goose", account_id=4))

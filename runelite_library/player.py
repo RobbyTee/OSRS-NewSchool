@@ -2,6 +2,8 @@ from time import sleep
 
 import requests
 
+from custom_dataclasses import Account
+from runelite_library.database import patch_player_stats
 from runelite_library.interact import RuneliteComponent
 from too_many_items import PathingObjects
 
@@ -29,6 +31,36 @@ class Player(RuneliteComponent):
             stats[stat_name.lower()] = stat_level
 
         return stats
+
+    def update_player_stats(self, account_name, account_id: int) -> int:
+        stats = self.get_player_stats()
+        new_account = Account(account_name)
+
+        setattr(new_account, "attack_level", stats["attack"])
+        setattr(new_account, "defence_level", stats["defence"])
+        setattr(new_account, "strength_level", stats["strength"])
+        setattr(new_account, "hitpoints_level", stats["hitpoints"])
+        setattr(new_account, "ranged_level", stats["ranged"])
+        setattr(new_account, "prayer_level", stats["prayer"])
+        setattr(new_account, "magic_level", stats["magic"])
+        setattr(new_account, "cooking_level", stats["cooking"])
+        setattr(new_account, "woodcutting_level", stats["woodcutting"])
+        setattr(new_account, "fletching_level", stats["fletching"])
+        setattr(new_account, "fishing_level", stats["fishing"])
+        setattr(new_account, "firemaking_level", stats["firemaking"])
+        setattr(new_account, "crafting_level", stats["crafting"])
+        setattr(new_account, "smithing_level", stats["smithing"])
+        setattr(new_account, "mining_level", stats["mining"])
+        setattr(new_account, "herblore_level", stats["herblore"])
+        setattr(new_account, "agility_level", stats["agility"])
+        setattr(new_account, "thieving_level", stats["thieving"])
+        setattr(new_account, "slayer_level", stats["slayer"])
+        setattr(new_account, "farming_level", stats["farming"])
+        setattr(new_account, "runecraft_level", stats["runecraft"])
+        setattr(new_account, "hunter_level", stats["hunter"])
+        setattr(new_account, "construction_level", stats["construction"])
+        setattr(new_account, "sailing_level", stats["sailing"])
+        return patch_player_stats(new_account, account_id)
 
     def stat_level(self, stat: str):
         stat = stat.lower()

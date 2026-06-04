@@ -30,7 +30,7 @@ def get_player_by_name(account_name: str) -> requests.Response:
     )
 
 
-def update_player_stats(
+def patch_player_stats(
     account: Account,
     account_id: int,
 ) -> requests.Response:
