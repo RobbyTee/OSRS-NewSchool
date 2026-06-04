@@ -2,7 +2,9 @@ from enum import Enum, auto
 from time import sleep
 
 from config import settings
+from custom_dataclasses import BirdhouseRun as Run
 from runelite_library.bank import Bank
+from runelite_library.database import NullDatabase, RuneDashboard
 from runelite_library.interact import RuneliteComponent, close_interface
 from runelite_library.player import Player
 from runelite_library.rune_logger import log_event
@@ -18,6 +20,11 @@ from too_many_items import (
     ToolTips,
     WearableObjects,
 )
+
+if settings.use_database:
+    DATABASE = RuneDashboard
+else:
+    DATABASE = NullDatabase
 
 SEED_TYPE = settings.seed_type.value
 try:
@@ -99,10 +106,12 @@ class State(Enum):
 
 
 class BirdhouseRun(RuneliteComponent):
-    def __init__(self, rl, account_id: int):
+    def __init__(self, rl):
         super().__init__(rl)
         self.p = Player(self.rl)
-        self.account_id = account_id
+        self.account_id = self.p.get_player_id()
+
+        self.d = DATABASE()
 
     def go_to_bh_1(self):
         dp = Wearable(self.rl)
@@ -291,13 +300,25 @@ class BirdhouseRun(RuneliteComponent):
                 seed_nest = self.inventory.count_object(ItemObjects.seed_nest)
                 total_nests = empty_nest + ring_nest + seed_nest
 
+                payload = Run(
+                    account_id=self.account_id,
+                    bird_nests=total_nests,
+                )
+
+                response_code = self.d.submit_bird_run(payload).status_code
+                if response_code != 200:
+                    log_event(
+                        f"Uploading birhouse run data to database failed with status code: {response_code}",
+                        "error",
+                    )
+
                 self.p.update_player_stats(
                     account_name=self.rl.player_name,
                     account_id=self.account_id,
                 )
 
                 log_event(f"{__name__} completed successfully\n")
-                return 0, total_nests
+                return 0
 
             elif state == State.FAILURE:
                 log_event(f"{__name__} experienced a failure\n", "error")

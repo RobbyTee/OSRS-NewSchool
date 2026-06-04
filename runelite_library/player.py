@@ -112,3 +112,15 @@ class Player(RuneliteComponent):
         if step < 1 or step > 10:
             raise ValueError("The value of step should be between 1 and 10 inclusive.")
         return self.minimap.click(PATH_OBJECTS.get(step))
+
+    def get_player_id(self) -> int | None:
+        response = self.d.get_player_by_name(self.rl.player_name)
+
+        if response.status_code == 404:
+            player = self.d.create_player(self.rl.player_name)
+            return player.json()["id"]
+
+        if response.status_code == 200:
+            return response.json()["id"]
+
+        return None

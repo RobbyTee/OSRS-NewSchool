@@ -2,19 +2,11 @@ import random
 from datetime import datetime, time
 from time import sleep
 
-from config import settings
-from custom_dataclasses import BirdhouseRun as Run
-from runelite_library.database import NullDatabase, RuneDashboard
 from runelite_library.login import LoginLogout
 from runelite_library.tracker import TrackTask
 from runelite_library.window_management import RuneLiteWindow
 from tasks.birdhouse_run import BirdhouseRun
 from tasks.crafting import MoltenGlass
-
-if settings.use_database:
-    DATABASE = RuneDashboard
-else:
-    DATABASE = NullDatabase
 
 
 def random_interval():
@@ -45,20 +37,6 @@ class AutoRune:
 
         self.craft = MoltenGlass(self.rl)
 
-        self.d = DATABASE()
-
-    def initialize_player(self) -> int | None:
-        response = self.d.get_player_by_name(self.rl.player_name)
-
-        if response.status_code == 404:
-            player = self.d.create_player(self.rl.player_name)
-            return player.json()["id"]
-
-        if response.status_code == 200:
-            return response.json()["id"]
-
-        return None
-
     def sleep_timer(self):
         sleep_time = random_interval() - self.last_bh.time_since_task()
         sleep_time = sleep_time if sleep_time > 0 else 1
@@ -67,26 +45,14 @@ class AutoRune:
 
         return sleep_time * 60
 
-    def do_birdhouse_run(self, player_id: int) -> bool:
-        self.login.login_now()
+    def do_birdhouse_run(self):
 
-        bird_nests = self.bh.main()
-
-        print(f"{timestamp()}: Completed birdhouse run")
-
-        payload = Run(
-            account_id=player_id,
-            bird_nests=bird_nests,
-        )
-
-        return self.d.submit_bird_run(payload).status_code == 200
+        return
 
     def main(self):
         do_crafting = True
 
-        player_id = self.initialize_player()
-
-        self.bh = BirdhouseRun(self.rl, player_id)
+        self.bh = BirdhouseRun(self.rl)
 
         while True:
             if bedtime():
@@ -94,8 +60,11 @@ class AutoRune:
                 continue
 
             if self.last_bh.time_since_task() > 50:
-                if not self.do_birdhouse_run(player_id):
+                self.login.login_now()
+                if not self.bh.main():
                     break
+
+                print(f"{timestamp()}: Completed birdhouse run")
 
                 if do_crafting and not self.craft.main():
                     do_crafting = False
