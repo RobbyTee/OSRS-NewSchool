@@ -45,10 +45,6 @@ class AutoRune:
 
         return sleep_time * 60
 
-    def do_birdhouse_run(self):
-
-        return
-
     def main(self):
         do_crafting = True
 
