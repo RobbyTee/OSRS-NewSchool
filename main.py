@@ -2,13 +2,19 @@ import random
 from datetime import datetime, time
 from time import sleep
 
+from config import settings
 from custom_dataclasses import BirdhouseRun as Run
-from runelite_library.database import create_player, get_player_by_name, submit_bird_run
+from runelite_library.database import NullDatabase, RuneDashboard
 from runelite_library.login import LoginLogout
 from runelite_library.tracker import TrackTask
 from runelite_library.window_management import RuneLiteWindow
 from tasks.birdhouse_run import BirdhouseRun
 from tasks.crafting import MoltenGlass
+
+if settings.use_database:
+    DATABASE = RuneDashboard
+else:
+    DATABASE = NullDatabase
 
 
 def random_interval():
@@ -39,11 +45,13 @@ class AutoRune:
 
         self.craft = MoltenGlass(self.rl)
 
+        self.d = DATABASE()
+
     def initialize_player(self) -> int | None:
-        response = get_player_by_name(self.rl.player_name)
+        response = self.d.get_player_by_name(self.rl.player_name)
 
         if response.status_code == 404:
-            player = create_player(self.rl.player_name)
+            player = self.d.create_player(self.rl.player_name)
             return player.json()["id"]
 
         if response.status_code == 200:
@@ -71,7 +79,7 @@ class AutoRune:
             bird_nests=bird_nests,
         )
 
-        return submit_bird_run(payload).status_code == 200
+        return self.d.submit_bird_run(payload).status_code == 200
 
     def main(self):
         do_crafting = True

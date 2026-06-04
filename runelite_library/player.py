@@ -2,10 +2,16 @@ from time import sleep
 
 import requests
 
+from config import settings
 from custom_dataclasses import Account
-from runelite_library.database import patch_player_stats
+from runelite_library.database import NullDatabase, RuneDashboard
 from runelite_library.interact import RuneliteComponent
 from too_many_items import PathingObjects
+
+if settings.use_database:
+    DATABASE = RuneDashboard
+else:
+    DATABASE = NullDatabase
 
 PATH_OBJECTS = {
     1: PathingObjects.step_1,
@@ -22,6 +28,10 @@ PATH_OBJECTS = {
 
 
 class Player(RuneliteComponent):
+    def __init__(self, rl):
+        super().__init__(rl)
+        self.d = DATABASE()
+
     def get_player_stats(self) -> dict:
         stats_request = requests.get(url="http://127.0.0.1:8080/stats", timeout=5)
         stats = {}
@@ -61,7 +71,7 @@ class Player(RuneliteComponent):
         setattr(new_account, "construction_level", stats["construction"])
         setattr(new_account, "sailing_level", stats["sailing"])
 
-        return patch_player_stats(new_account, account_id)
+        return self.d.patch_player_stats(new_account, account_id)
 
     def stat_level(self, stat: str):
         stat = stat.lower()

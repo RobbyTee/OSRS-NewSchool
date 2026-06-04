@@ -19,12 +19,6 @@ from too_many_items import (
     WearableObjects,
 )
 
-# CONFIG_FILE = Path("config.json")
-# with Path.open(CONFIG_FILE) as file:
-#     CONFIG = json.load(file)
-
-# BIRDHOUSE_CONFIG = CONFIG["Birdhouse_Run"]
-# SEED_TYPE = BIRDHOUSE_CONFIG["seed_type"]
 SEED_TYPE = settings.seed_type.value
 try:
     SEED_TYPE = getattr(ItemObjects, SEED_TYPE)
