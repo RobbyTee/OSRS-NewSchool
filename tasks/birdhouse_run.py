@@ -331,10 +331,10 @@ class BirdhouseRun(RuneliteComponent):
     def main(self, state=State.INIT):
         log_event(f"Starting {__name__}")
         while True:
-            result, amount = self.state_machine(state)
+            result = self.state_machine(state)
             if result == 2:
                 Bank.return_to_bank()
             elif result == 1:
-                return None
+                return False
             elif result == 0:
-                return amount
+                return True
