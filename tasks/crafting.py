@@ -144,8 +144,7 @@ class MoltenGlass(RuneliteComponent):
                 result = self.glassblowing(state)
 
                 if result == 2:
-                    b = Bank()
-                    b.return_to_bank()
+                    return False
 
                 if result == 1:
                     return False
