@@ -21,6 +21,9 @@ from too_many_items import (
     WearableObjects,
 )
 
+# Set which bank tab Birhouse supplies are in
+BANK_TAB = BankObjects.tab_iii
+
 DATABASE = RuneDashboard if settings.use_database else NullDatabase
 
 SEED_TYPE = settings.seed_type.value
@@ -28,7 +31,6 @@ try:
     SEED_TYPE = getattr(ItemObjects, SEED_TYPE)
 except AttributeError:
     raise KeyError(f"Item '{SEED_TYPE}' does not exist in ItemObjects.")
-
 
 birdhouse_reqs = {
     "normal": {
@@ -207,7 +209,7 @@ class BirdhouseRun(RuneliteComponent):
                 bank.deposit_equipment()
                 bank.deposit_inventory()
                 try:
-                    bank.open_tab(BankObjects.tab_iii)
+                    bank.open_tab(BANK_TAB)
                     bank.withdraw(tools)
                     bank.withdraw(equipment, check_quantity=True)
                     bank.withdraw(logs, check_quantity=True)

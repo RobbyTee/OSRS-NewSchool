@@ -7,7 +7,6 @@ from runelite_library.player import Player
 from runelite_library.rune_logger import log_event
 from too_many_items import (
     BankObjects,
-    GlobalColorObjects,
     ItemObjects,
     ToolObjects,
 )
@@ -134,49 +133,21 @@ class MoltenGlass(RuneliteComponent):
 
             elif state == GlassBlowingStates.RETURN_TO_BANK:
                 log_event(f"{__name__} found no bank\n", "error")
-                return 2
+                if bank.return_to_bank():
+                    state = GlassBlowingStates.OPEN_BANK
+                    continue
+
+                state = GlassBlowingStates.FAILURE
 
     def main(self, state=GlassBlowingStates.INIT):
         start_time = time()
 
         while True:
-            if time() - start_time <= (TIME_TO_CRAFT * 60):
-                result = self.glassblowing(state)
-
-                if result == 2:
-                    return False
-
-                if result == 1:
-                    return False
-
-            else:
+            still_crafting = bool(time() - start_time <= (TIME_TO_CRAFT * 60))
+            if not still_crafting:
                 return True
 
+            if still_crafting and self.glassblowing(state):
+                continue
 
-class NecklaceStates(Enum):
-    INIT = auto()
-    GEAR_PREP = auto()
-    OPEN_BANK = auto()
-    WITHDRAW_GEAR = auto()
-
-
-class RubyNecklace(RuneliteComponent):
-    def player_in_edgeville(self) -> bool:
-        return bool(self.client.find_by_image(BankObjects.edgeville))
-
-    def state_machine(self, state):
-        if state == NecklaceStates.INIT:
-            teleport_to_edgeville = True
-
-            p = Player(self.rl)
-
-            if self.player_in_edgeville():
-                teleport_to_edgeville = False
-
-            if p.stat_level("crafting") < 40:
-                raise ValueError(
-                    f"Your crafting level is not greater than 40: got {p.stat_level('crafting')}"
-                )
-
-    def main(self, state=NecklaceStates.INIT):
-        return self.state_machine(state)
+            return False
