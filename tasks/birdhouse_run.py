@@ -9,7 +9,7 @@ from runelite_library.interact import RuneliteComponent, close_interface
 from runelite_library.player import Player
 from runelite_library.rune_logger import log_event
 from runelite_library.teleports import Wearable
-from runelite_library.tracker import TrackTask
+from runelite_library.tracker import TrackLog
 from too_many_items import (
     BankObjects,
     GlobalColorObjects,
@@ -21,10 +21,7 @@ from too_many_items import (
     WearableObjects,
 )
 
-if settings.use_database:
-    DATABASE = RuneDashboard
-else:
-    DATABASE = NullDatabase
+DATABASE = RuneDashboard if settings.use_database else NullDatabase
 
 SEED_TYPE = settings.seed_type.value
 try:
@@ -292,8 +289,8 @@ class BirdhouseRun(RuneliteComponent):
                 state = State.COMPLETE
 
             elif state == State.COMPLETE:
-                bh_run = TrackTask("birdhouse_run")
-                bh_run.task_completed()
+                bh_run = TrackLog("birdhouse_run")
+                bh_run.overwrite_datetime()
 
                 empty_nest = self.inventory.count_object(ItemObjects.empty_birdnest)
                 ring_nest = self.inventory.count_object(ItemObjects.ring_nest)
@@ -318,23 +315,20 @@ class BirdhouseRun(RuneliteComponent):
                 )
 
                 log_event(f"{__name__} completed successfully\n")
-                return 0
+                return True
 
             elif state == State.FAILURE:
                 log_event(f"{__name__} experienced a failure\n", "error")
-                return 1, None
+                return False
 
             elif state == State.RETURN_TO_BANK:
                 log_event(f"{__name__} found no bank\n", "error")
-                return 2, None
+                if bank.return_to_bank():
+                    state = State.OPEN_BANK
+                    continue
+
+                state = State.FAILURE
 
     def main(self, state=State.INIT):
         log_event(f"Starting {__name__}")
-        while True:
-            result = self.state_machine(state)
-            if result == 2:
-                Bank.return_to_bank()
-            elif result == 1:
-                return False
-            elif result == 0:
-                return True
+        return self.state_machine(state)

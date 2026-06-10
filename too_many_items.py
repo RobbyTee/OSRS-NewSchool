@@ -235,6 +235,8 @@ class MenuObjects:
     edgeville = r + "edgeville.png"
     karamja = r + "karamja.png"
 
+    minigame_castle_wars = r + "minigame_castle_wars.png"
+
 
 class MiscObjects:
     """If it doesn't fall into any of the other categories, it'll go here."""
@@ -273,6 +275,7 @@ class NormalSpellObjects:
     lumby = r + "lumbridge.png"
     falador = r + "falador.png"
     high_alchemy = r + "high_alch.png"
+    minigame = r + "minigame.png"
 
 
 class PathingObjects:

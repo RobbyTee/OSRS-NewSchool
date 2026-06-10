@@ -3,7 +3,7 @@ from datetime import datetime, time
 from time import sleep
 
 from runelite_library.login import LoginLogout
-from runelite_library.tracker import TrackTask
+from runelite_library.tracker import TrackLog
 from runelite_library.window_management import RuneLiteWindow
 from tasks.birdhouse_run import BirdhouseRun
 from tasks.crafting import MoltenGlass
@@ -33,7 +33,7 @@ class AutoRune:
 
         self.login = LoginLogout(self.rl)
 
-        self.last_bh = TrackTask("birdhouse_run")
+        self.last_bh = TrackLog("birdhouse_run")
 
         self.craft = MoltenGlass(self.rl)
 
@@ -55,7 +55,7 @@ class AutoRune:
                 sleep(3600)
                 continue
 
-            if self.last_bh.time_since_task() > 50:
+            if self.last_bh.time_since_last_logged() > 50:
                 self.login.login_now()
                 if not self.bh.main():
                     break

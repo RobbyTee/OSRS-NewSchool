@@ -1,5 +1,21 @@
-from runelite_library.interact import RuneliteComponent
-from too_many_items import BankObjects, MiscObjects, ToolTips
+from time import sleep
+
+from config import settings
+from runelite_library.interact import (
+    RuneliteComponent,
+    close_interface,
+    open_interface,
+    press,
+)
+from runelite_library.tracker import TrackLog
+from too_many_items import (
+    BankObjects,
+    MenuObjects,
+    MiscObjects,
+    NormalSpellObjects,
+    PathingObjects,
+    ToolTips,
+)
 
 
 class Bank(RuneliteComponent):
@@ -86,4 +102,24 @@ class Bank(RuneliteComponent):
                 raise ValueError("Withdraw 14 not found as a menu option")
 
     def return_to_bank(self):
-        pass
+        close_interface()
+
+        minigame_teleport = TrackLog("minigame_teleport")
+
+        if minigame_teleport.time_since_last_logged() < 20:
+            return False
+
+        open_interface("spells")
+        self.inventory.click(NormalSpellObjects.minigame)
+
+        self.client.click(MenuObjects.minigame_castle_wars)
+
+        sleep(45)
+
+        open_interface("inventory")
+        self.minimap.click(PathingObjects.step_1)
+
+        minigame_teleport.overwrite_datetime()
+
+        sleep(8)
+        return True
