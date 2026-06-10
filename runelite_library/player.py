@@ -8,10 +8,8 @@ from runelite_library.database import NullDatabase, RuneDashboard
 from runelite_library.interact import RuneliteComponent
 from too_many_items import PathingObjects
 
-if settings.use_database:
-    DATABASE = RuneDashboard
-else:
-    DATABASE = NullDatabase
+DATABASE = RuneDashboard if settings.use_database else NullDatabase
+
 
 PATH_OBJECTS = {
     1: PathingObjects.step_1,

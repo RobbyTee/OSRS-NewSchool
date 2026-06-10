@@ -13,7 +13,7 @@ class TrackLog:
         self.log_dir = Path(LOG_DIRECTORY)
         self.log_dir.mkdir(parents=True, exist_ok=True)
         self.log_file = log_file
-        self.log_path = self.log_dir / self.log_file
+        self.log_path = self.log_dir / self.log_file + ".log"
 
         if not self.log_path.exists():
             self.initialize()
