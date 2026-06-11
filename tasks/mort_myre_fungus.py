@@ -2,7 +2,7 @@ from enum import Enum, auto
 from time import sleep
 
 from config import settings
-from custom_dataclasses import BirdhouseRun as Run
+from custom_dataclasses import FungusRun as Run
 from runelite_library.bank import Bank
 from runelite_library.database import NullDatabase, RuneDashboard
 from runelite_library.interact import RuneliteComponent, close_interface
@@ -25,6 +25,8 @@ from too_many_items import (
 FOOD_SOURCE = Food.lobster
 BANK_TAB = BankObjects.tab_vi
 
+DATABASE = RuneDashboard if settings.use_database else NullDatabase
+
 
 class State(Enum):
     INIT = auto()
@@ -43,6 +45,7 @@ class State(Enum):
     CHECK_INVENTORY = auto()
     FARM_FUNGUS = auto()
     TELEPORT_TO_CASTLE_WARS = auto()
+    UPDATE_DATABASE = auto()
     COMPLETE = auto()
     FAILURE = auto()
     RETURN_TO_BANK = auto()
@@ -53,6 +56,9 @@ class MortMyreFungus(RuneliteComponent):
         while True:
             if state == State.INIT:
                 player = Player(self.rl)
+
+                # Check daily Mort Myre Fungus count
+                # if > amount: proceed
 
                 state = State.PREPARE_GEAR
 
@@ -218,6 +224,22 @@ class MortMyreFungus(RuneliteComponent):
                 player.step_to(1)
                 sleep(4)
 
+                state = State.UPDATE_DATABASE
+
+            elif state == State.UPDATE_DATABASE:
+                database = DATABASE()
+                fungi = self.inventory.count_object(ItemObjects.mort_myre_fungus)
+                account_id = player.get_player_id()
+
+                run = Run(account_id=account_id, fungi_amount=fungi)
+
+                result = database.submit_fungus_run(fungus_run=run)
+                if result.status_code != 200:
+                    log_event(
+                        f"Failed to post fungus run with status code: {result.status_code}",
+                        "error",
+                    )
+
                 state = State.COMPLETE
 
             elif state == State.COMPLETE:
@@ -232,3 +254,7 @@ class MortMyreFungus(RuneliteComponent):
                     continue
 
                 state = State.FAILURE
+
+    def main(self):
+        log_event(f"Starting {__name__}")
+        return self.state_machine()

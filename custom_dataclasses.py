@@ -61,3 +61,9 @@ class FKeys(str, Enum):
     F10 = "f10"
     F11 = "f11"
     F12 = "f12"
+
+
+@dataclass
+class FungusRun:
+    account_id: int
+    fungi_amount: int

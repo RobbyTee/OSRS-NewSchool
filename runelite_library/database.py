@@ -3,7 +3,7 @@ from dataclasses import asdict
 import requests
 
 from config import settings
-from custom_dataclasses import Account, BirdhouseRun
+from custom_dataclasses import Account, BirdhouseRun, FungusRun
 
 DATABASE_URL = settings.db_url
 
@@ -22,6 +22,9 @@ class NullDatabase:
         return 200
 
     def test_database_connection(*args, **kwargs) -> int:
+        return 200
+
+    def submit_fungus_run(*args, **kwargs) -> int:
         return 200
 
 
@@ -81,3 +84,13 @@ class RuneDashboard:
         url = DATABASE_URL + endpoint
 
         return requests.get(url, timeout=5).status_code
+
+    def submit_fungus_run(self, fungus_run: FungusRun) -> requests.Response:
+        endpoint = "/api/fungus"
+        url = DATABASE_URL + endpoint
+
+        return requests.post(
+            url,
+            json=asdict(fungus_run),
+            timeout=5,
+        )

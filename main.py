@@ -7,6 +7,7 @@ from runelite_library.tracker import TrackLog
 from runelite_library.window_management import RuneLiteWindow
 from tasks.birdhouse_run import BirdhouseRun
 from tasks.crafting import MoltenGlass
+from tasks.mort_myre_fungus import MortMyreFungus
 
 
 def random_interval():
@@ -37,8 +38,10 @@ class AutoRune:
 
         self.craft = MoltenGlass(self.rl)
 
+        self.fungus = MortMyreFungus(self.rl)
+
     def sleep_timer(self):
-        sleep_time = random_interval() - self.last_bh.time_since_task()
+        sleep_time = random_interval() - self.last_bh.time_since_last_logged()
         sleep_time = sleep_time if sleep_time > 0 else 1
 
         print(f"{timestamp()}: Sleeping for {sleep_time} minutes.")
@@ -47,6 +50,7 @@ class AutoRune:
 
     def main(self):
         do_crafting = True
+        do_fungus_run = True
 
         self.bh = BirdhouseRun(self.rl)
 
@@ -68,6 +72,9 @@ class AutoRune:
                 sleep(300)
                 self.login.logout_now()
                 print(f"{timestamp()}: Logged out successfully")
+
+            if do_fungus_run and not self.fungus.main():
+                do_fungus_run = False
 
             sleep(self.sleep_timer())
 

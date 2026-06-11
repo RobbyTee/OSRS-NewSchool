@@ -125,11 +125,11 @@ class MoltenGlass(RuneliteComponent):
 
             elif state == GlassBlowingStates.COMPLETE:
                 log_event(f"{__name__} completed successfully\n")
-                return 0
+                return True
 
             elif state == GlassBlowingStates.FAILURE:
                 log_event(f"{__name__} experienced a failure\n", "error")
-                return 1
+                return False
 
             elif state == GlassBlowingStates.RETURN_TO_BANK:
                 log_event(f"{__name__} found no bank\n", "error")
