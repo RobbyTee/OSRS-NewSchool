@@ -1,12 +1,13 @@
 from time import sleep
 
+import numpy as np
 import requests
 
 from config import settings
 from custom_dataclasses import Account
 from runelite_library.database import NullDatabase, RuneDashboard
 from runelite_library.interact import RuneliteComponent
-from too_many_items import PathingObjects
+from too_many_items import PathingObjects, PlayerObjects
 
 DATABASE = RuneDashboard if settings.use_database else NullDatabase
 
@@ -122,3 +123,45 @@ class Player(RuneliteComponent):
             return response.json()["id"]
 
         return None
+
+    @property
+    def prayer(self) -> tuple[int, int, int]:
+        current_rgb = self.player_prayer.average_color_of_area()
+
+        full_prayer = np.array([91, 75, 78])
+        empty_prayer = np.array([61, 63, 60])
+
+        current = np.array(current_rgb)
+
+        direction = full_prayer - empty_prayer
+
+        progress = np.dot(
+            current - empty_prayer,
+            direction,
+        ) / np.dot(direction, direction)
+
+        return int(max(0.0, min(100.0, progress * 100)))
+
+    @property
+    def health(self) -> tuple[int, int, int]:
+        """Less than 30% is low health"""
+        current_rgb = self.player_health.average_color_of_area()
+
+        most_health = np.array([7, 24, 131])
+        low_health = np.array([12, 28, 85])
+
+        current = np.array(current_rgb)
+
+        direction = most_health - low_health
+
+        progress = np.dot(
+            current - low_health,
+            direction,
+        ) / np.dot(direction, direction)
+
+        return int(max(0.0, min(100.0, progress * 100)))
+
+    @property
+    def inventory_full(self) -> bool:
+        current_rgb = self.last_inventory_slot.average_color_of_area()
+        return current_rgb != PlayerObjects.last_inv

@@ -1,11 +1,15 @@
-from runelite_library.bank import Bank
+from runelite_library.interact import Interact
+from runelite_library.login import LoginLogout
+from runelite_library.player import Player
 from runelite_library.window_management import RuneLiteWindow
+from tasks.mort_myre_fungus import MortMyreFungus, State
+from too_many_items import GlobalColorObjects, WearableObjects
 
 rl = RuneLiteWindow()
 rl.activate()
 
-b = Bank(rl)
-if b.return_to_bank():
-    print("Done!")
-else:
-    print("Nope!")
+# login = LoginLogout(rl)
+# login.login_now()
+
+m = MortMyreFungus(rl)
+m.state_machine()

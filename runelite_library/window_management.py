@@ -166,10 +166,10 @@ class RuneLiteWindow:
         x1, y1, x2, y2 = self.bounds
 
         return {
-            "top": y1 + 54,
-            "left": x2 - 212,
-            "width": 20,
-            "height": 20,
+            "top": y1 + 56,
+            "left": x2 - 210,
+            "width": 17,
+            "height": 16,
         }
 
     @property
@@ -225,4 +225,15 @@ class RuneLiteWindow:
             "left": x2 - 230,
             "width": 15,
             "height": 15,
+        }
+
+    @property
+    def prayer(self):
+        x1, y1, x2, y2 = self.bounds
+
+        return {
+            "top": y1 + 86,
+            "left": x2 - 212,
+            "width": 20,
+            "height": 24,
         }

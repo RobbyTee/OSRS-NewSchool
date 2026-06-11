@@ -304,6 +304,16 @@ class Interact:
 
         return False
 
+    def average_color_of_area(self) -> tuple[int, int, int]:
+        img = self.screenshot
+
+        if img.shape[2] == 4:
+            img = img[:, :, :3]
+
+        avg = img.mean(axis=(0, 1))
+
+        return tuple(int(c) for c in avg)
+
 
 class RuneliteComponent:
     def __init__(self, rl: RuneLiteWindow):
@@ -314,6 +324,9 @@ class RuneliteComponent:
         self.inventory = Interact(self.rl, self.rl.inventory)
         self.minimap = Interact(self.rl, self.rl.minimap)
         self.compass = Interact(self.rl, self.rl.compass)
+        self.player_health = Interact(self.rl, self.rl.health)
+        self.player_prayer = Interact(self.rl, self.rl.prayer)
+        self.last_inventory_slot = Interact(self.rl, self.rl.inv_slot_28)
 
 
 # - - - - - - - #

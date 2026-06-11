@@ -74,7 +74,6 @@ class GlobalColorObjects:
 
     # Inventory
     food = (0, 255, 0)
-    last_inv = (41, 53, 62)
 
     # Out of Bounds
     oob_tile = (255, 90, 0)
@@ -90,6 +89,10 @@ class GlobalColorObjects:
     mush_tree = (200, 30, 220)
 
     furnace = (184, 45, 144)
+
+    gate = (70, 250, 70)
+
+    fungus = (90, 220, 90)
 
 
 class ItemObjects:
@@ -117,7 +120,6 @@ class ItemObjects:
     sapling = r + "sapling.png"
 
     # Equipment
-    dramen_staff = r + "dramen_staff.png"
     sickle = r + "sickle.png"
 
     # Logs
@@ -237,6 +239,10 @@ class MenuObjects:
 
     minigame_castle_wars = r + "minigame_castle_wars.png"
 
+    kandarin_monastery = r + "kandarin_monastery.png"
+
+    cks = r + "cks.png"
+
 
 class MiscObjects:
     """If it doesn't fall into any of the other categories, it'll go here."""
@@ -299,7 +305,7 @@ class PlayerObjects:
     r = "Images\\player\\"
 
     player_tile = (240, 170, 0)
-    most_health = (7, 25, 136)
+    last_inv = (41, 53, 62)
 
 
 class RuneObjects:
@@ -367,3 +373,4 @@ class WearableObjects:
     rabbits_foot = r + "rabbits_foot.png"
 
     staff_of_fire = r + "staff_of_fire.png"
+    dramen_staff = r + "dramen_staff.png"
