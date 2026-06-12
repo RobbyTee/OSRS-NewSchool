@@ -1,5 +1,5 @@
 from enum import Enum, auto
-from time import sleep
+from time import sleep, time
 
 from config import settings
 from custom_dataclasses import FungusRun as Run
@@ -9,16 +9,12 @@ from runelite_library.interact import RuneliteComponent, close_interface
 from runelite_library.player import Player
 from runelite_library.rune_logger import log_event
 from runelite_library.teleports import Wearable
-from runelite_library.tracker import TrackLog
 from too_many_items import (
     BankObjects,
     Food,
     GlobalColorObjects,
     ItemObjects,
     MenuObjects,
-    MiscObjects,
-    ToolObjects,
-    ToolTips,
     WearableObjects,
 )
 
@@ -26,6 +22,8 @@ FOOD_SOURCE = Food.lobster
 BANK_TAB = BankObjects.tab_vi
 
 DATABASE = RuneDashboard if settings.use_database else NullDatabase
+
+SAFETY_THRESHOLD = 5  # in minutes
 
 
 class State(Enum):
@@ -56,6 +54,7 @@ class MortMyreFungus(RuneliteComponent):
         while True:
             if state == State.INIT:
                 player = Player(self.rl)
+                start_time = time()
 
                 # Check daily Mort Myre Fungus count
                 # if > amount: proceed
@@ -65,7 +64,7 @@ class MortMyreFungus(RuneliteComponent):
             elif state == State.PREPARE_GEAR:
                 withdraw_food = False
 
-                if player.health < 30:
+                if player.health < 70:
                     withdraw_food = True
 
                 state = State.OPEN_BANK
@@ -200,6 +199,10 @@ class MortMyreFungus(RuneliteComponent):
                 state = State.FARM_FUNGUS
 
             elif state == State.FARM_FUNGUS:
+                if time() - start_time > SAFETY_THRESHOLD * 60:
+                    state = State.TELEPORT_TO_CASTLE_WARS
+                    continue
+
                 self.inventory.click(ItemObjects.sickle)
 
                 sleep(2)

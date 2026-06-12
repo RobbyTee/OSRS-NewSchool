@@ -23,17 +23,15 @@ class LoginLogout(RuneliteComponent):
             move_to_and_click(coords)
 
     def login_now(self):
-        logged_in = False
         if self.client.find_player():
-            logged_in = True
+            return True
 
-        if not logged_in:
-            self._handle_alternatives()
+        self._handle_alternatives()
 
-            self.client.click(LoginObjects.play_now_button)
-            self.client.click(LoginObjects.click_to_play_button)
-            if not self.client.wait_for_element(PlayerObjects.player_tile, 20):
-                return False
+        self.client.click(LoginObjects.play_now_button)
+        self.client.click(LoginObjects.click_to_play_button)
+        if not self.client.wait_for_element(PlayerObjects.player_tile, 20):
+            return False
 
         set_screen(self.rl)
         return True

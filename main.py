@@ -1,5 +1,6 @@
 import random
 from datetime import datetime, time
+from enum import Enum, auto
 from time import sleep
 
 from runelite_library.login import LoginLogout
@@ -8,6 +9,8 @@ from runelite_library.window_management import RuneLiteWindow
 from tasks.birdhouse_run import BirdhouseRun
 from tasks.crafting import MoltenGlass
 from tasks.mort_myre_fungus import MortMyreFungus
+
+TOTAL_MM_RUNS = 5  # How many money maker runs?
 
 
 def random_interval():
@@ -24,6 +27,18 @@ def bedtime():
 
 def timestamp():
     return datetime.now().strftime("%m-%d-%Y %H:%M")
+
+
+class State(Enum):
+    INIT = auto()
+    BEDTIME = auto()
+    CHOOSE_TASK = auto()
+    HUNTER = auto()
+    CRAFTING = auto()
+    MONEY_MAKER = auto()
+    REST_UNTIL_HUNTER = auto()
+    COMPLETE = auto()
+    FAILURE = auto()
 
 
 class AutoRune:
@@ -48,38 +63,72 @@ class AutoRune:
 
         return sleep_time * 60
 
-    def main(self):
-        do_crafting = True
-        do_fungus_run = True
-
-        self.bh = BirdhouseRun(self.rl)
+    def state_machine(self, state=State.INIT):
+        crafting = True
+        collect_fungi = True
+        money_maker_runs = 0
 
         while True:
-            if bedtime():
-                sleep(3600)
-                continue
+            if state == State.INIT:
+                state = State.BEDTIME if bedtime() else State.CHOOSE_TASK
 
-            if self.last_bh.time_since_last_logged() > 50:
+            elif state == State.BEDTIME:
+                sleep(3600)
+                state = State.INIT
+
+            elif state == State.CHOOSE_TASK:
+                if self.last_bh.time_since_last_logged() > 50:
+                    state = State.HUNTER
+                    continue
+
+                state = State.MONEY_MAKER
+
+            elif state == State.HUNTER:
+                money_maker_runs = 0
+
                 self.login.login_now()
+
+                self.bh = BirdhouseRun(self.rl)
+
                 if not self.bh.main():
-                    break
+                    state == State.FAILURE
+                    continue
 
                 print(f"{timestamp()}: Completed birdhouse run")
+                state = State.CRAFTING
 
-                if do_crafting and not self.craft.main():
-                    do_crafting = False
+            elif state == State.CRAFTING:
+                if crafting and not self.craft.main():
+                    print(f"{timestamp()}: No crafting supplies - disabled crafting")
+                    crafting = False
+                print(f"{timestamp()}: Completed crafting task")
+                state = State.INIT
 
-                sleep(300)
-                self.login.logout_now()
-                print(f"{timestamp()}: Logged out successfully")
+            elif state == State.MONEY_MAKER:
+                if money_maker_runs >= TOTAL_MM_RUNS:
+                    print(f"{timestamp()}: Maxed out money maker runs. Resting!")
+                    state = State.REST_UNTIL_HUNTER
+                    continue
 
-            if do_fungus_run and not self.fungus.main():
-                do_fungus_run = False
+                self.login.login_now()
+                if collect_fungi and not self.fungus.main():
+                    state = State.REST_UNTIL_HUNTER
+                    continue
 
-            sleep(self.sleep_timer())
+                money_maker_runs += 1
+                print(
+                    f"{timestamp()}: Completed money maker run ({TOTAL_MM_RUNS - money_maker_runs} more runs left)"
+                )
+                state = State.INIT
+
+            elif state == State.REST_UNTIL_HUNTER:
+                rest_time = self.sleep_timer()
+                print(f"{timestamp()}: Resting for {rest_time} minutes\n")
+                sleep(rest_time)
+                state = State.INIT
 
 
 if __name__ == "__main__":
     print(f"{timestamp()}: Started Script")
     play = AutoRune()
-    play.main()
+    play.state_machine()
