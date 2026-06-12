@@ -110,6 +110,7 @@ class MoltenGlass(RuneliteComponent):
                         "error",
                     )
                     close_interface()
+                    sleep(2)
                     state = GlassBlowingStates.FAILURE
                     continue
                 close_interface()
