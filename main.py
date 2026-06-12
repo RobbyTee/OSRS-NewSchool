@@ -122,9 +122,7 @@ class AutoRune:
                 state = State.INIT
 
             elif state == State.REST_UNTIL_HUNTER:
-                rest_time = self.sleep_timer()
-                print(f"{timestamp()}: Resting for {rest_time} minutes\n")
-                sleep(rest_time)
+                sleep(self.sleep_timer())
                 state = State.INIT
 
 
