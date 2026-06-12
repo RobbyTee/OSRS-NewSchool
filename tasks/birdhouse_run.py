@@ -287,7 +287,7 @@ class BirdhouseRun(RuneliteComponent):
 
             elif state == State.GO_TO_BANK:
                 self.p.path_to(7)
-                sleep(5)
+                sleep(9)
                 state = State.COMPLETE
 
             elif state == State.COMPLETE:
