@@ -260,6 +260,8 @@ class MiscObjects:
 
     good = r + "good.png"
 
+    gate = r + "gate.png"
+
     # Birdhouses
     bh1 = r + "birdhouse_1.png"
     bh2 = r + "birdhouse_2.png"

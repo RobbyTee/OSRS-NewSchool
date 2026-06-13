@@ -15,6 +15,7 @@ from too_many_items import (
     GlobalColorObjects,
     ItemObjects,
     MenuObjects,
+    MiscObjects,
     WearableObjects,
 )
 
@@ -158,18 +159,27 @@ class MortMyreFungus(RuneliteComponent):
                 self.play_window.click(GlobalColorObjects.gate)
                 attempt_at_gate += 1
 
+                sleep(5)
+
                 if attempt_at_gate > 3:
                     state = State.FAILURE
+                    continue
+
+                player.step_to(2)
+
+                sleep(3)
+
+                if not self.play_window.wait_for_element(MiscObjects.gate):
                     continue
 
                 state = State.PATH_TO_LOGS
 
             elif state == State.PATH_TO_LOGS:
-                player.step_to(2)
+                player.step_to(3)
 
-                sleep(4)
+                sleep(5)
 
-                if not player.step_to(3):
+                if not player.step_to(4):
                     state = State.OPEN_SWAMP_GATE
                     continue
 
@@ -212,7 +222,7 @@ class MortMyreFungus(RuneliteComponent):
                         self.play_window.click(GlobalColorObjects.fungus, timeout=0.5)
                         sleep(0.8)
                 except TimeoutError:
-                    player.step_to(3)
+                    player.step_to(4)
 
                 state = State.CHECK_HEALTH
 
