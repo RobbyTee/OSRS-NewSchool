@@ -268,6 +268,7 @@ class BirdhouseRun(RuneliteComponent):
                     state = State.GO_TO_BANK
                     continue
 
+                sleep(1.5)
                 bh_crafted = False
                 bh_step += 1
                 state = State.GO_TO_NEXT_BH
