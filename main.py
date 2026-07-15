@@ -10,7 +10,7 @@ from tasks.birdhouse_run import BirdhouseRun
 from tasks.crafting import MoltenGlass
 from tasks.mort_myre_fungus import MortMyreFungus
 
-TOTAL_MM_RUNS = 5  # How many money maker runs?
+TOTAL_MM_RUNS = 6  # How many money maker runs?
 
 
 def random_interval():
@@ -19,7 +19,7 @@ def random_interval():
 
 def bedtime():
     now = datetime.now().time()
-    start = time(22, 30)
+    start = time(24, 0)
     end = time(5, 0)
 
     return now >= start or now <= end
