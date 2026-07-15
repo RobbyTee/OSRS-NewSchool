@@ -19,7 +19,7 @@ def random_interval():
 
 def bedtime():
     now = datetime.now().time()
-    start = time(0, 0)
+    start = time(23, 59)
     end = time(5, 0)
 
     return now >= start or now <= end
